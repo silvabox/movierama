@@ -3,6 +3,7 @@ class VotesController < ApplicationController
     authorize! :vote, _movie
 
     _voter.vote(_type)
+    VotingMailer.voted(_type, _movie).deliver
     redirect_to root_path, notice: 'Vote cast'
   end
 

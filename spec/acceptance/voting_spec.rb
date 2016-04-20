@@ -7,19 +7,18 @@ require 'support/with_user'
 RSpec.describe 'vote on movies', type: :feature do
 
   let(:page) { Pages::MovieList.new }
-
-  before do
-    author = User.create(
+  let(:author) { User.create(
       uid:  'null|12345',
-      name: 'Bob'
-    )
-    Movie.create(
+      name: 'Bob',
+      email: 'bob@example.com'
+    ) }
+
+  let!(:movie) { Movie.create(
       title:        'Empire strikes back',
       description:  'Who\'s scruffy-looking?',
       date:         '1980-05-21',
       user:         author
-    )
-  end
+    ) }
 
   context 'when logged out' do
     it 'cannot vote' do
@@ -72,6 +71,20 @@ RSpec.describe 'vote on movies', type: :feature do
       expect {
         page.like('The Party')
       }.to raise_error(Capybara::ElementNotFound)
+    end
+
+    it 'emails the user when a movie is liked' do
+      page.like('Empire strikes back')
+      email = ActionMailer::Base.deliveries.last
+      expect(email.to).to include author.email
+      expect(email.subject).to include 'likes'
+    end
+
+    it 'emails the user when a movie is hated' do
+      page.hate('Empire strikes back')
+      email = ActionMailer::Base.deliveries.last
+      expect(email.to).to include author.email
+      expect(email.subject).to include 'hates'
     end
   end
 
