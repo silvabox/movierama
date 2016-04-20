@@ -1,0 +1,8 @@
+!!!
+%html
+  %body
+    %h1 Hi #{@user.name},
+    %p
+      Bad News!  Someone has hated
+      %strong
+        = link_to(@movie.title, movie_url(@movie))
