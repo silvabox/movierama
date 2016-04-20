@@ -27,6 +27,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    addressable (2.4.0)
     arel (5.0.1.20140414130214)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
@@ -94,6 +95,10 @@ GEM
     json (1.8.1)
     jwt (1.0.0)
     kgio (2.9.2)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    letter_opener (1.4.1)
+      launchy (~> 2.2)
     listen (2.7.11)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -271,6 +276,7 @@ DEPENDENCIES
   guard-rspec
   haml-rails
   jquery-rails
+  letter_opener
   newrelic_rpm
   ohm
   ohm-contrib

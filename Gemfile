@@ -65,3 +65,7 @@ group :test do
   gem 'poltergeist'    # Driver for PhantomJS headless browser
   gem 'capybara'       # DSL for browser control
 end
+
+group :development do
+  gem 'letter_opener'
+end
