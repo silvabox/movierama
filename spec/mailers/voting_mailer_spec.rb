@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UserMailer do
+RSpec.describe VotingMailer do
   let(:user) { User.create(name: 'Ben', email: 'ben@example.com') }
   let(:movie) { Movie.create(
                   title: 'The Force Awakens',
@@ -9,8 +9,20 @@ RSpec.describe UserMailer do
                   user: user,
                   liker_count: 20) }
 
-  describe 'likes notification' do
-    let(:email) { UserMailer.liked(movie) }
+  describe 'voted notification' do
+    it 'selects the liked notification when the type is :like' do
+      allow(VotingMailer).to receive(:like).and_return 'Liked Email'
+      expect(VotingMailer.voted(:like, movie)).to eq 'Liked Email'
+    end
+
+    it 'selects the hated notification when the type is :hate' do
+      allow(VotingMailer).to receive(:hate).and_return 'Hated Email'
+      expect(VotingMailer.voted(:hate, movie)).to eq 'Hated Email'
+    end
+  end
+
+  describe 'liked notification' do
+    let(:email) { VotingMailer.like(movie) }
 
     before do
       email.deliver
@@ -30,7 +42,7 @@ RSpec.describe UserMailer do
   end
 
   describe 'hated notification' do
-    let(:email) { UserMailer.hated(movie) }
+    let(:email) { VotingMailer.hate(movie) }
 
     it "sends to the movie's associated user" do
       expect(email.to).to include user.email

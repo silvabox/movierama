@@ -1,13 +1,17 @@
-class UserMailer < ActionMailer::Base
+class VotingMailer < ActionMailer::Base
   default from: "no-reply@movierama.dev"
 
-  def liked(movie)
+  def self.voted(type, movie)
+    self.send(type, movie)
+  end
+
+  def like(movie)
     @movie = movie
     @user = movie.user
     mail(to: @user.email, subject: "Someone likes your movie!")
   end
 
-  def hated(movie)
+  def hate(movie)
     @movie = movie
     @user = movie.user
     mail(to: @user.email, subject: 'Someone hates your movie!')
